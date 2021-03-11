@@ -27,32 +27,20 @@ router.use('/test', testAPIRouter);
 router.use("/testDB", testDBRouter);
 
 
-// Login
+// Login / Register
 router.get('/user/', user_controller.login);
-// Get admin user
-//router.get('/user/:username/', user_controller.returnUser);
-// Create User
 router.post('/user/', user_controller.addUser);
 
-
-// Get Patients 
+// Get all patients 
 router.get('/patients', patient_controller.getPatients);
-// Get Patient for a geo area (post/area_name)
-router.get('/patients/:username', patient_controller.getPatients);
-// New Patient (area, addedBy, patientName, age, weight, height)
+// New Patient {body: {area: "areaName", addedBy: "user",  patientName: "Bob", age: "14", weight: "16", height: "16"} }
 router.post('/patients', patient_controller.newPatient);
 
 
 // Get all locations/areas
 router.get('/area', area_controller.getAreas);
-// Get area by name
-router.get('/area/:name', area_controller.getArea);
-// Get area/location for a given user
-router.get('/areas/:name', area_controller.areaByUser);
 // Create area
 router.post('/area', area_controller.createArea);
-// Add patient to existing area
-router.post('/areaadd', area_controller.addMember);
 
 
 app.use('/api', router);
