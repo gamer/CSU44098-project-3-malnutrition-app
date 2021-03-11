@@ -5,8 +5,8 @@ var Schema = mongoose.Schema;
 const AreaSchema = new Schema(
     {
         name: { type: String, required: true },
-        members: { type: [String] },
+        members: {type: Schema.Types.ObjectId, ref: 'Patient'},
     },
 )
 
-module.exports = mongoose.model('AreaModel', AreaSchema);
+module.exports = mongoose.model('Area', AreaSchema);
