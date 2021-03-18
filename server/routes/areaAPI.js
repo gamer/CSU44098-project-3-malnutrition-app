@@ -1,7 +1,9 @@
+const { json } = require("express");
 const Area = require("../db-models/AreaModel.js");
-var randtoken = require('rand-token');
+var CryptoJS = require("crypto-js");
+var config = require('../config');
 
-
+// Create a new area without assigning any patients. Can also just create by enterring unique on patient entry.
 exports.createArea = async function (req, res) {
     try {
         const area = new Area()
@@ -14,15 +16,9 @@ exports.createArea = async function (req, res) {
     }
 };
 
-/*
-{
-	{
-	"area":"test",
-	"username": "test"
-    }
-}
-*/
 
+
+// Get an area {name: "areaName"} or get all areas {}
 exports.getAreas = async (req, res) => {
     query = {}
     if(req.body.name)
@@ -30,14 +26,18 @@ exports.getAreas = async (req, res) => {
 
     await Area.find(query, (err, Areas) => {
         if (err) {
-            return res.status(400).json({ success: false, error: err })
+            return res.status(400).json({ success: false, error: "Area not found."})
         }
-        if (!Areas.length) {
-            return res
-                .status(404)
-                .json({ success: false, error: `No areas found` })
+        for (var i = 0; i < Areas.length; i++) {
+            for (var j = 0; j < Areas[i].members.length; j++) {
+                for (var property in Areas[i].members[j].toJSON()) {
+                    if(property != "date" && property != "id")
+                        console.log(property)
+                        Areas[i].members[j][property] = CryptoJS.AES.decrypt(Areas[i].members[j][property], config.secret).toString(CryptoJS.enc.Utf8)
+                  }
+            }  
         }
-        return res.status(200).json({ success: true, data: Areas.members })
+        return res.status(200).json({ success: true, data: area})
     }).catch(err => console.log(err))
 }
 

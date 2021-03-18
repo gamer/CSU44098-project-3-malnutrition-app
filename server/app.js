@@ -33,11 +33,11 @@ router.post('/user/', user_controller.addUser);
 
 // Get all patients 
 router.get('/patients', patient_controller.getPatients);
-// New Patient {body: {area: "areaName", addedBy: "user",  patientName: "Bob", age: "14", weight: "16", height: "16"} }
+// New Patient {body: {area: "areaName", name: "Bob", age: "14", weight: "16", height: "16"} }
 router.post('/patients', patient_controller.newPatient);
 
 
-// Get all locations/areas
+// Get an area {name: "areaName"} or get all areas {}
 router.get('/area', area_controller.getAreas);
 // Create area
 router.post('/area', area_controller.createArea);

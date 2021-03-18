@@ -10,6 +10,7 @@ var UserSchema = new Schema({
     password: { type: String, required: true },
 });
 
+
 // Handy pre save hook
 UserSchema.pre('save', function (next) {
     var user = this;
@@ -32,8 +33,6 @@ UserSchema.methods.comparePassword = function (candidatePassword, cb) {
         cb(null, isMatch);
     });
 };
-
-
 
 
 module.exports = mongoose.model('User', UserSchema);

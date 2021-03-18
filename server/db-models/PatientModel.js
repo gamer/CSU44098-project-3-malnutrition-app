@@ -18,5 +18,16 @@ var PatientSchema = new Schema({
     date: { type: Date, default: Date.now }
 });
 
+PatientSchema.options.toJSON = {
+    transform: function(doc, ret, options) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+        return ret;
+    }
+};
 
-module.exports = mongoose.model('Patient', PatientSchema);
+module.exports = {
+    Patient: mongoose.model('Patient', PatientSchema),
+    PatientSchema: PatientSchema
+}

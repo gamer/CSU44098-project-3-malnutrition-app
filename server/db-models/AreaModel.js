@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
-
+const Patient = require("../db-models/PatientModel.js");
 var Schema = mongoose.Schema;
+
 
 const AreaSchema = new Schema(
     {
         name: { type: String, required: true },
-        members: {type: Schema.Types.ObjectId, ref: 'Patient'},
+        members: [Patient.PatientSchema],
     },
 )
 

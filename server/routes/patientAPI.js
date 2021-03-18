@@ -1,9 +1,8 @@
-const Patient = require("../db-models/PatientModel.js");
+var Patient = require("../db-models/PatientModel.js");
+Patient = Patient.Patient
 const Area = require("../db-models/AreaModel.js");
 var CryptoJS = require("crypto-js");
 var config = require('../config');
-const UserModel = require("../db-models/UserModel.js");
-const jwt = require('jsonwebtoken');
 
 
 
@@ -28,8 +27,8 @@ exports.newPatient = async function (req, res) {
     const newPatient = await post.save();
 
     // Add patient to area (if doesn't exist, create)
-    let tarea = await Area.findOne({ 'name': param.area });
-
+    var tarea = await Area.findOne({ 'name': param.area });
+    console.log("tarea:",tarea)
     try {
         if(tarea == null){
             tarea = new Area()
@@ -47,21 +46,17 @@ exports.newPatient = async function (req, res) {
 
 // Get all patients
 exports.getPatients = async function (req, res) {
-    let param = req.body;
     const getPatients = await Patient.find({});
     var patients = getPatients;
 
     for (var i = 0; i < patients.length; i++) {
-            var key = config.secret
-            var decryptedPatient = {
-                name: CryptoJS.AES.decrypt(patients[i].name, key).toString(CryptoJS.enc.Utf8),
-                age: CryptoJS.AES.decrypt(patients[i].age, key).toString(CryptoJS.enc.Utf8),
-                height:CryptoJS.AES.decrypt(patients[i].weight, key).toString(CryptoJS.enc.Utf8),
-                weight: CryptoJS.AES.decrypt(patients[i].height, key).toString(CryptoJS.enc.Utf8),
-                date: patients[i].date
+        for (var property in patients[i].toJSON()) {
+            if(property != "date" && property != "id")
+                patients[i][property] = CryptoJS.AES.decrypt(patients[i][property], config.secret).toString(CryptoJS.enc.Utf8)
+          }
+
             }
-            patients[i] = decryptedPatient;
-        }
+        
     res.status(200).send(patients);
     return;
 }

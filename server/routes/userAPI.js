@@ -1,6 +1,4 @@
 const User = require("../db-models/UserModel.js");
-const jwt = require('jsonwebtoken');
-var config = require('../config');
 
 exports.login = async function (req, res) {
     // Fetching user and test password verification
@@ -21,6 +19,7 @@ exports.login = async function (req, res) {
     });
 }
 
+// Register / Create user
 exports.addUser = async function (req, res) {
     let param = req.body;
     var testUser = new User({
