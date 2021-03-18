@@ -19,30 +19,33 @@ The purpose of this project is to develop an app for volunteers to gather data o
   
   
 
-### **Endpoints:**
+### **Endpoints:**  
 
-**Test**
-
+**Test**  
 (GET) http://localhost:5000/api/testDB
 
 
-**User Login/Register {username: "", password:""}**
-
+**User Login/Register {username: "", password:""}**  
 (GET/POST) http://localhost:5000/api/user
 
-**Create new area {name: ""}**
+
+**Create new area {name: ""}**  
 (POST) http://localhost:5000/api/area/
 
-**Create new patient {"area": "newGroup",  "name": "newGroup", "age": "11", "weight": "16", "height": "16"}**
+
+**Create new patient {"area": "newGroup",  "name": "newGroup", "age": "11", "weight": "16", "height": "16"}**  
 (POST) http://localhost:5000/api/area/
 
-**Get all patient data:**
+
+**Get all patient data:**  
 (GET) http://localhost:5000/api/patients/
 
-**Get data for all groups:** 
+
+**Get data for all groups:**   
 (GET) http://localhost:5000/api/patients/
 
-**Get data for a specific area {name: ""}:** 
+
+**Get data for a specific area {"name": ""}:**  
 (GET) http://localhost:5000/api/patients/
 
 
