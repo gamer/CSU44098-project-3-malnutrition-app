@@ -16,28 +16,38 @@ The purpose of this project is to develop an app for volunteers to gather data o
 -  cd..
 
 -  Run docker-compose up
-
   
   
 
-### **Endpoints:**
+### **Endpoints:**  
 
-**Test**
-
+**Test**  
 (GET) http://localhost:5000/api/testDB
 
-  
 
-**User Login/Register (credentials in body, login returns token)**
-
+**User Login/Register {username: "", password:""}**  
 (GET/POST) http://localhost:5000/api/user
 
-  
-  
 
-**Patient Data (area_name in body to get for a given location/area):**
+**Create new area {name: ""}**  
+(POST) http://localhost:5000/api/area
 
-(GET/POST) http://localhost:5000/api/patients/
+
+**Create new patient {"area": "newGroup",  "name": "newGroup", "age": "11", "weight": "16", "height": "16"}**  
+(POST) http://localhost:5000/api/patients
+
+
+**Get all patient data:**  
+(GET) http://localhost:5000/api/patients
+
+
+**Get data for all areas:**   
+(GET) http://localhost:5000/api/area
+
+
+**Get data for a specific area {"name": ""}:**  
+(GET) http://localhost:5000/api/area
+
 
 
 

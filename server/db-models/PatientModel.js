@@ -3,12 +3,6 @@ const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var PatientSchema = new Schema({
-    area_name: {
-        type: String, required: true
-    },
-    addedBy: {
-        type: String, required: true
-    },
     name: {
         type: String, required: true
     },
@@ -24,5 +18,16 @@ var PatientSchema = new Schema({
     date: { type: Date, default: Date.now }
 });
 
+PatientSchema.options.toJSON = {
+    transform: function(doc, ret, options) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+        return ret;
+    }
+};
 
-module.exports = mongoose.model('PatientModel', PatientSchema);
+module.exports = {
+    Patient: mongoose.model('Patient', PatientSchema),
+    PatientSchema: PatientSchema
+}

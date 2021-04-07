@@ -14,6 +14,7 @@ services:
             - MONGO_CONNECTION_STRING=${MONGO_CONNECTION_STRING}
             - MONGO_CONNECTION_STRING_ADMIN=${MONGO_CONNECTION_STRING_ADMIN}
             - WAIT_HOSTS=db:${MONGO_PORT}
+            
         depends_on:
             - db
         restart: on-failure
