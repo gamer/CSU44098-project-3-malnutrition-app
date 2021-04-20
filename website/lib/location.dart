@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
+import 'dart:math';
+
 
 class DropDown extends StatefulWidget {
   @override
@@ -8,46 +11,111 @@ class DropDown extends StatefulWidget {
 
 class _DropDownState extends State<DropDown> {
 
+  List<charts.Series<PieData, String>> _pieData;
+
+  @override void initState() {
+    _pieData = List<charts.Series<PieData, String>>();
+  }
+
+  var piedata = [
+    new PieData('Severe', new Random().nextInt(300), charts.MaterialPalette.red.shadeDefault),
+    new PieData('Moderate', new Random().nextInt(200), charts.MaterialPalette.yellow.shadeDefault),
+    new PieData('Minor', new Random().nextInt(700), charts.MaterialPalette.green.shadeDefault),
+    new PieData('Healthy', new Random().nextInt(2500), charts.MaterialPalette.blue.shadeDefault),
+  ];
+  
+
   int dIndex = 0;
   int mIndex = 0;
 
+
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        DropdownButton<String>(
-          value: locations.getDepartmentsStrings()[dIndex],
-          onChanged: (value){
-            setState(() {
-              dIndex = locations.getDepartmentsStrings().indexOf(value);
-              mIndex = 0;
-            });
-          },
-          items: locations.getDepartmentsStrings().map<DropdownMenuItem<String>>((String value){
-            return DropdownMenuItem(
-              value: value,
-                child: Text(value)
-            );
-          }).toList(),
 
+    var series = [
+      new charts.Series(id: 'Malnutrition',
+          data: piedata,
+
+          domainFn: (PieData piedata, _ ) => piedata.activity,
+          measureFn: (PieData piedata, _ ) => piedata.time,
+          colorFn: (PieData piedata, _ ) => piedata.color,
+          labelAccessorFn: (PieData row, _) => '${row.activity}: ${row.time}',
+
+    ),
+    ];
+
+    var chart = new charts.PieChart(
+        series,
+        animate: true,
+        animationDuration: Duration(seconds: 2),
+        defaultRenderer: new charts.ArcRendererConfig(
+          arcWidth: 100,
+          arcRendererDecorators: [
+            new charts.ArcLabelDecorator(
+                labelPosition: charts.ArcLabelPosition.outside)
+          ],
         ),
-        DropdownButton(
-          value: locations.getDepartments()[dIndex].getMunicipalities()[mIndex],
-          onChanged: (value){
-            setState(() {
-              mIndex = locations.getDepartments()[dIndex].getMunicipalities().indexOf(value);
-            });
-          },
-          items: locations.getDepartments()[dIndex].getMunicipalities().map<DropdownMenuItem<String>>((String value){
-            return DropdownMenuItem(
-                value: value,
-                child: Text(value)
-            );
-          }).toList(),
-        )
+      );
+
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            DropdownButton<String>(
+              value: locations.getDepartmentsStrings()[dIndex],
+              onChanged: (value){
+                setState(() {
+                  dIndex = locations.getDepartmentsStrings().indexOf(value);
+                  mIndex = 0;
+                  piedata = [
+                  new PieData('Severe', new Random().nextInt(300), charts.MaterialPalette.red.shadeDefault),
+                  new PieData('Moderate', new Random().nextInt(200), charts.MaterialPalette.yellow.shadeDefault),
+                  new PieData('Minor', new Random().nextInt(700), charts.MaterialPalette.green.shadeDefault),
+                  new PieData('Healthy', new Random().nextInt(2500), charts.MaterialPalette.blue.shadeDefault),
+                  ];
+                });
+              },
+              items: locations.getDepartmentsStrings().map<DropdownMenuItem<String>>((String value){
+                return DropdownMenuItem(
+                  value: value,
+                    child: Text(value)
+                );
+              }).toList(),
+
+            ),
+            DropdownButton(
+              value: locations.getDepartments()[dIndex].getMunicipalities()[mIndex],
+              onChanged: (value){
+                setState(() {
+                  mIndex = locations.getDepartments()[dIndex].getMunicipalities().indexOf(value);
+                  piedata = [
+                    new PieData('Severe', new Random().nextInt(300), charts.MaterialPalette.red.shadeDefault),
+                    new PieData('Moderate', new Random().nextInt(200), charts.MaterialPalette.yellow.shadeDefault),
+                    new PieData('Minor', new Random().nextInt(700), charts.MaterialPalette.green.shadeDefault),
+                    new PieData('Healthy', new Random().nextInt(2500), charts.MaterialPalette.blue.shadeDefault),
+                  ];
+                });
+              },
+              items: locations.getDepartments()[dIndex].getMunicipalities().map<DropdownMenuItem<String>>((String value){
+                return DropdownMenuItem(
+                    value: value,
+                    child: Text(value)
+                );
+              }).toList(),
+            )
+          ],
+        ),
+        buildExpanded(chart),
       ],
     );
+  }
+
+  Expanded buildExpanded(var chart) {
+    return Expanded(
+        child:  chart,
+      );
   }
 }
 
@@ -111,7 +179,8 @@ Locations locations = Locations(
               'La Masisca',
               'San Francisco',
               'Tela',
-            ],),
+            ],
+             ),
         Location(department: 'Choluteca',
             municipalities: [
               'Apacilagya',
@@ -130,7 +199,8 @@ Locations locations = Locations(
               'San José',
               'San Marcos de Colón',
               'Santa Ana de Yusguare',
-            ],),
+            ],
+           ),
         Location(department: 'Colón',
             municipalities: [
               'Balfate',
@@ -143,7 +213,8 @@ Locations locations = Locations(
               'Sonaguera',
               'Tocoa',
               'Trujillo',
-            ],),
+            ],
+           ),
         Location(department: 'Comayagua',
             municipalities: [
               'Ajuterique',
@@ -167,7 +238,8 @@ Locations locations = Locations(
               'Siguatepeque',
               'Taulabe',
               'Villa de San Antonio',
-            ],),
+            ],
+           ),
         Location(department: 'Copán',
             municipalities: [
               'Cabañas',
@@ -193,7 +265,8 @@ Locations locations = Locations(
               'Santa Rosa de Copán',
               'Trinidad de Copán',
               'Veracruz',
-            ],),
+            ],
+           ),
         Location(department: 'Cortés',
             municipalities: [
               'Choloma',
@@ -208,7 +281,8 @@ Locations locations = Locations(
               'San Pedro Sula',
               'Santa Cruz de Yojoa',
               'Villanueva',
-            ],),
+            ],
+           ),
         Location(department: 'El Paraíso',
             municipalities: [
               'Alauca',
@@ -230,7 +304,8 @@ Locations locations = Locations(
               'Vado Ancho',
               'Yauyupe',
               'Yuscarán',
-            ]),
+            ],
+           ),
         Location(department: 'Francisco Morazán',
             municipalities: [
               'Alubarén',
@@ -261,7 +336,8 @@ Locations locations = Locations(
               'Valle de Ángeles',
               'Vallecillo',
               'Villa de San Francisco',
-            ]),
+            ],
+           ),
         Location(department: 'Gracias a Dios',
             municipalities: [
               'Ahuas',
@@ -270,7 +346,8 @@ Locations locations = Locations(
               'Puerto Lempira',
               'Ramón Villeda Morales',
               'Wampusirpi',
-            ]),
+            ],
+           ),
         Location(department: 'Intibucá',
             municipalities: [
               'Camasca',
@@ -290,14 +367,16 @@ Locations locations = Locations(
               'San Miguelito',
               'Santa Lucía',
               'Yamaranguila',
-            ]),
+            ],
+           ),
         Location(department: 'Islas de la Bahía',
             municipalities: [
               'Guanaja',
               'José Santos Guardiola',
               'Roatán',
               'Útila',
-            ]),
+            ],
+           ),
         Location(department: 'La Paz',
             municipalities: [
               'Aguaqueterique',
@@ -318,7 +397,8 @@ Locations locations = Locations(
               'Santa Elena',
               'Santa María',
               'Santiago de Puringla',
-            ]),
+            ],
+           ),
         Location(department: 'Lempira',
             municipalities: [
               'Yarula',
@@ -350,7 +430,8 @@ Locations locations = Locations(
               'Tomalá',
               'Valladolid',
               'Virginia',
-            ]),
+            ],
+           ),
         Location(department: 'Ocotepeque',
             municipalities: [
               'Belén Gualcho',
@@ -369,7 +450,8 @@ Locations locations = Locations(
               'Santa Fé',
               'Sensenti',
               'Sinuapa',
-            ]),
+            ],
+           ),
         Location(department: 'Olancho',
             municipalities: [
               'Campamento',
@@ -395,7 +477,8 @@ Locations locations = Locations(
               'Santa Maria del Real',
               'Silca',
               'Yocón',
-            ]),
+            ],
+           ),
         Location(department: 'Santa Bárbara',
             municipalities: [
               'Arada',
@@ -426,7 +509,8 @@ Locations locations = Locations(
               'Santa Rita',
               'San Vicente Centenario',
               'Trinidad',
-            ]),
+            ],
+           ),
         Location(department: 'Valle',
             municipalities: [
               'Alianza',
@@ -438,7 +522,8 @@ Locations locations = Locations(
               'Nacaome',
               'San Francisco de Coray',
               'San Lorenzo',
-            ]),
+            ],
+           ),
         Location(department: 'Yoro',
             municipalities: [
               'Arenal',
@@ -453,6 +538,14 @@ Locations locations = Locations(
               'Yorito',
               'Yoro',
               'Honduras',
-            ]),
+            ],
+         ),
       ]
   );
+
+class PieData {
+  String activity;
+  int time;
+  charts.Color color;
+  PieData(this.activity, this.time, this.color);
+}

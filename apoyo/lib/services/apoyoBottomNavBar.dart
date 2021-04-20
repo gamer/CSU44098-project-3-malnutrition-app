@@ -10,7 +10,7 @@ class ApoyoBottomNavBar extends StatelessWidget {
     return BottomNavigationBar(
       showSelectedLabels: false,
       onTap: (index) {
-        Navigator.pushReplacementNamed(context, index == 2 ? '/offlinePatients' : index == 3 ? '/addPatient' : '/home');
+        Navigator.pushReplacementNamed(context, index == 1 ? '/resources' : index == 2 ? '/offlinePatients' : index == 3 ? '/addPatient' : '/home');
       },
       backgroundColor: Colors.blue[800],
       items: <BottomNavigationBarItem>[

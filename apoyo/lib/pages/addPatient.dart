@@ -1,7 +1,11 @@
+import 'package:apoyo/pages/offlinePatients.dart';
 import 'package:apoyo/services/apoyoBottomNavBar.dart';
 import 'package:apoyo/services/apoyoDrawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:apoyo/services/patient.dart';
+
+import '../main.dart';
 
 class AddPatient extends StatefulWidget {
   @override
@@ -13,7 +17,7 @@ class _AddPatientState extends State<AddPatient> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueAccent[800],
+        backgroundColor: Colors.blue[800],
         title: Text(
           'Add Patient',
           style: TextStyle(
@@ -36,15 +40,24 @@ class PatientInputForm extends StatefulWidget {
 
 class _PatientInputFormState extends State<PatientInputForm> {
   
-
+String firstName;
+String surname;
+String department;
+String municipality;
+double weight;
+double height;
+DateTime datetime = DateTime.now();
+int year;
+int month;
+int day;
+var tabIndex = 0;
 
   @override
   Widget build(BuildContext context) {
 
-    print('hello ${locations.getDepartments()[0].getMunicipalities()}');
     return DefaultTabController(
 
-      initialIndex: 0,
+      initialIndex: tabIndex,
       length: 3,
       child: Scaffold(
         appBar: AppBar(
@@ -75,6 +88,7 @@ class _PatientInputFormState extends State<PatientInputForm> {
                     setState(() {
                       dIndex = val;
                       mIndex = 0;
+                      department = locations.getDepartments()[val].getDepartmentName();
                     });
                   },
                   backgroundColor: Colors.grey[100],
@@ -88,6 +102,7 @@ class _PatientInputFormState extends State<PatientInputForm> {
                   onSelectedItemChanged: (val){
                     setState(() {
                       mIndex = val;
+                      municipality = locations.getDepartments()[dIndex].getMunicipalities()[val];
                     });
                   },
                   backgroundColor: Colors.grey[100],
@@ -98,7 +113,9 @@ class _PatientInputFormState extends State<PatientInputForm> {
                   padding: const EdgeInsets.fromLTRB(250, 50, 0, 0),
                   child: FlatButton(
                     color: Colors.blue[800],
-                    onPressed: () {},
+                    onPressed: () {
+                      DefaultTabController.of(context).animateTo(1);
+                    },
                     child: Text(
                      'Next',
                       style: TextStyle(
@@ -117,6 +134,12 @@ class _PatientInputFormState extends State<PatientInputForm> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         TextFormField(
+                          initialValue: firstName,
+                          onChanged: (input) {
+                            setState(() {
+                              firstName = input;
+                            });
+                          },
                           decoration: const InputDecoration(
                             hintText: 'Enter your first name',
                           ),
@@ -125,18 +148,25 @@ class _PatientInputFormState extends State<PatientInputForm> {
                           padding: EdgeInsets.symmetric(vertical: 16.0),
                         ),
                         TextFormField(
+                          onChanged: (input) {
+                            setState(() {
+                              surname = input;
+                            });
+                          },
                           decoration: const InputDecoration(
                             hintText: 'Enter your surname',
                           ),
                         ),
-                        MyCupertinoDate(),
+                        MyCupertinoDate(dateTime: datetime),
                         Padding(
                           padding: EdgeInsets.fromLTRB(0, 190, 0, 0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               FlatButton.icon(
-                                onPressed: () {},
+                                onPressed: () {
+                                  DefaultTabController.of(context).animateTo(0);
+                                },
                                 color: Colors.blue[800],
                                 textColor: Colors.white,
                                 icon: Icon(Icons.arrow_back),
@@ -144,7 +174,9 @@ class _PatientInputFormState extends State<PatientInputForm> {
                               ),
                               SizedBox(width: 100),
                               FlatButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  DefaultTabController.of(context).animateTo(2);
+                                },
                                 color: Colors.blue[800],
                                 textColor: Colors.white,
                                 child: Row(
@@ -173,7 +205,11 @@ class _PatientInputFormState extends State<PatientInputForm> {
                 SizedBox(height: 20),
                 CupertinoPicker(
                   onSelectedItemChanged: (val){
-
+                      print('${heights[val].toString()} hellloooo1' );
+                      String s = (heights[val]).toString().replaceAll(new RegExp('[a-zA-Z()"]*'), '');
+                      print(s);
+                      height = double.parse(s);
+                      print('$height hellllooo');
                   },
                   looping: true,
                   backgroundColor: Colors.grey[100],
@@ -185,7 +221,9 @@ class _PatientInputFormState extends State<PatientInputForm> {
                 SizedBox(height: 20),
                 CupertinoPicker(
                   onSelectedItemChanged: (val){
-
+                    String s = weights[val].toString().replaceAll(new RegExp('[a-zA-Z()"]*'), '');
+                      weight = double.parse(s);
+                      print('weight: $weight');
                   },
                   looping: true,
                   backgroundColor: Colors.grey[100],
@@ -213,7 +251,28 @@ class _PatientInputFormState extends State<PatientInputForm> {
                       SizedBox(width: 100),
                       ElevatedButton(
                         onPressed: () {
-
+                          Patient patient = new Patient(
+                            firstName: firstName,
+                            surname: surname,
+                            height: height,
+                            weight: weight,
+                            municipality: municipality,
+                            department: department,
+                            birthday: new DateTime(2010),
+                          );
+                          bool pushed = true;
+                          print(patient.toString());
+                          setState(() {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => OfflinePatients(
+                                  patient: patient,
+                                  empty: 'aaaaa',
+                                )
+                              )
+                            );
+                          });
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -629,12 +688,15 @@ class _PatientInputFormState extends State<PatientInputForm> {
 }
 
 class MyCupertinoDate extends StatefulWidget {
+  DateTime dateTime;
+  MyCupertinoDate({Key key, this.dateTime}) : super(key:key);
   @override
-  _MyCupertinoDateState createState() => _MyCupertinoDateState();
+  _MyCupertinoDateState createState() => _MyCupertinoDateState(dateTime: this.dateTime);
 }
 
 class _MyCupertinoDateState extends State<MyCupertinoDate> {
-  DateTime _chosenDateTime = DateTime.now();
+  DateTime dateTime;
+  _MyCupertinoDateState({this.dateTime});
 
   void _showDatePicker(ctx){
     showCupertinoModalPopup(
@@ -649,10 +711,10 @@ class _MyCupertinoDateState extends State<MyCupertinoDate> {
                 child: CupertinoDatePicker(
                   mode: CupertinoDatePickerMode.date,
                   maximumYear: DateTime.now().year,
-                  initialDateTime: _chosenDateTime,
+                  initialDateTime: dateTime,
                   onDateTimeChanged: (datetime) {
                     setState(() {
-                      _chosenDateTime = datetime;
+                      dateTime = datetime;
                     });
                   },
                 ),

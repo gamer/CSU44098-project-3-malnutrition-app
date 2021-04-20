@@ -9,6 +9,7 @@ services:
             - "${SERVER_PORT}:${SERVER_PORT}"
         volumes:
             - ./server:/server
+            - ./server/node_modules
         environment:
             - SERVER_PORT=${SERVER_PORT}
             - MONGO_CONNECTION_STRING=${MONGO_CONNECTION_STRING}

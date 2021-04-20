@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:website/location.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'dart:math';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
@@ -13,10 +15,10 @@ class _MyAppState extends State<MyApp> {
   }
   generateData() {
     var piedata = [
-      new PieData('Severe', 35.8, charts.MaterialPalette.red.shadeDefault),
-      new PieData('Moderate', 8.3, charts.MaterialPalette.yellow.shadeDefault),
-      new PieData('Minor', 10.8, charts.MaterialPalette.green.shadeDefault),
-      new PieData('Healthy', 15.6, charts.MaterialPalette.blue.shadeDefault),
+      new PieData('Severe', new Random().nextInt(300), charts.MaterialPalette.red.shadeDefault),
+      new PieData('Moderate', new Random().nextInt(200), charts.MaterialPalette.yellow.shadeDefault),
+      new PieData('Minor', new Random().nextInt(700), charts.MaterialPalette.green.shadeDefault),
+      new PieData('Healthy', new Random().nextInt(2500), charts.MaterialPalette.blue.shadeDefault),
     ];
     _pieData.add(
       charts.Series(
@@ -37,32 +39,15 @@ class _MyAppState extends State<MyApp> {
           appBar: AppBar(
             title: Text('Apoyo'),
           ),
-          body: Column(
-            children: [
-              DropDown(),
-              Expanded(
-                child:  charts.PieChart(
-                  generateData(),
-                  animate: false,
-                  animationDuration: Duration(seconds: 5),
-                  defaultRenderer: new charts.ArcRendererConfig(
-                    arcWidth: 100,
-                    arcRendererDecorators: [
-                      new charts.ArcLabelDecorator(
-                          labelPosition: charts.ArcLabelPosition.outside)
-                    ],
-                  ),
-                ),
-              ),
-            ],
+          body: DropDown(),
           ),
-        )
-    );
+        );
+
   }
 }
 class PieData {
   String activity;
-  double time;
+  int time;
   charts.Color color;
   PieData(this.activity, this.time, this.color);
 }

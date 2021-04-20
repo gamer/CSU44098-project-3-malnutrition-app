@@ -47,7 +47,7 @@ class ApoyoDrawer extends StatelessWidget {
             title: Text('Offline Patients'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushNamed(context, '/offlinePatients');
+              Navigator.pushReplacementNamed(context, '/offlinePatients');
             },
           ),
           ListTile(
@@ -55,6 +55,7 @@ class ApoyoDrawer extends StatelessWidget {
             title: Text('Resources'),
             onTap: () {
               Navigator.pop(context);
+              Navigator.pushReplacementNamed(context, '/resources');
             },
           ),
           Divider(height: 30.0, color: Colors.grey[500]),
