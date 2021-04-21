@@ -16,6 +16,7 @@ class _AddPatientState extends State<AddPatient> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.blue[800],
         title: Text(
@@ -110,92 +111,111 @@ var tabIndex = 0;
                   children: locations.getDepartments()[dIndex].getMunicipalitiesNames(),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(250, 50, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(250, 230, 50, 0),
                   child: FlatButton(
                     color: Colors.blue[800],
+                    textColor: Colors.white,
                     onPressed: () {
-                      DefaultTabController.of(context).animateTo(1);
                     },
-                    child: Text(
-                     'Next',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                      Text('Next'),
+
+                      SizedBox(width:4.0),
+                      Icon(Icons.arrow_forward),
+                    ],
                   ),
                 )
+                ),
               ],
             ),
             Center( //Age/Name
-              child: Column(
-                children: <Widget>[
-                  Form(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        TextFormField(
-                          initialValue: firstName,
-                          onChanged: (input) {
-                            setState(() {
-                              firstName = input;
-                            });
-                          },
-                          decoration: const InputDecoration(
-                            hintText: 'Enter your first name',
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    Form(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                              "First name",
+                            style: TextStyle(
+                              fontSize: 30,
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 16.0),
-                        ),
-                        TextFormField(
-                          onChanged: (input) {
-                            setState(() {
-                              surname = input;
-                            });
-                          },
-                          decoration: const InputDecoration(
-                            hintText: 'Enter your surname',
+                          Divider(),
+                          TextFormField(
+                            initialValue: firstName,
+                            onChanged: (input) {
+                              setState(() {
+                                firstName = input;
+                              });
+                            },
+                            decoration: const InputDecoration(
+                              hintText: 'Enter your first name',
+                            ),
                           ),
-                        ),
-                        MyCupertinoDate(dateTime: datetime),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(0, 190, 0, 0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              FlatButton.icon(
-                                onPressed: () {
-                                  DefaultTabController.of(context).animateTo(0);
-                                },
-                                color: Colors.blue[800],
-                                textColor: Colors.white,
-                                icon: Icon(Icons.arrow_back),
-                                label: Text('Back'),
-                              ),
-                              SizedBox(width: 100),
-                              FlatButton(
-                                onPressed: () {
-                                  DefaultTabController.of(context).animateTo(2);
-                                },
-                                color: Colors.blue[800],
-                                textColor: Colors.white,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text('Next'),
-
-                                    SizedBox(width:4.0),
-                                    Icon(Icons.arrow_forward),
-                                  ],
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 16.0),
+                          ),
+                          Text(
+                              'Surname',
+                                  style: TextStyle(
+                              fontSize: 30,
+                          ),
+                          ),
+                          Divider(),
+                          TextFormField(
+                            onChanged: (input) {
+                              setState(() {
+                                surname = input;
+                              });
+                            },
+                            decoration: const InputDecoration(
+                              hintText: 'Enter your surname',
+                            ),
+                          ),
+                          MyCupertinoDate(dateTime: datetime),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(0, 210, 0, 0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                FlatButton.icon(
+                                  onPressed: () {
+                                    DefaultTabController.of(context).animateTo(0);
+                                  },
+                                  color: Colors.blue[800],
+                                  textColor: Colors.white,
+                                  icon: Icon(Icons.arrow_back),
+                                  label: Text('Back'),
                                 ),
-                              ),
-                            ],
+                                SizedBox(width: 100),
+                                FlatButton(
+                                  onPressed: () {
+                                    DefaultTabController.of(context).animateTo(2);
+                                  },
+                                  color: Colors.blue[800],
+                                  textColor: Colors.white,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Text('Next'),
+
+                                      SizedBox(width:4.0),
+                                      Icon(Icons.arrow_forward),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             Column(
@@ -231,15 +251,14 @@ var tabIndex = 0;
                   children: weights,
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  padding: EdgeInsets.fromLTRB(0, 220, 0, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      ElevatedButton.icon(
+                      FlatButton.icon(
                         onPressed: () {},
-                        style: ButtonStyle(
-
-                        ),
+                        color: Colors.blue[800],
+                        textColor: Colors.white,
                         icon: Icon(Icons.arrow_back),
                         label: Text(
                           'Back',
@@ -249,7 +268,9 @@ var tabIndex = 0;
                         ),
                       ),
                       SizedBox(width: 100),
-                      ElevatedButton(
+                      FlatButton(
+                        color: Colors.blue[800],
+                        textColor: Colors.white,
                         onPressed: () {
                           Patient patient = new Patient(
                             firstName: firstName,

@@ -57,14 +57,44 @@ class _HomeState extends State<Home> {
                 image: AssetImage('assets/hondurasOutside.jpeg'),
               ),
             ),
-            child: Center(
-              child: Text(
-                'Placeholder',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 50.0,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 20, 180, 10),
+                  child: Text(
+                    'Apoyo',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 50.0,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 5,
+                      shadows: <Shadow>[
+                        Shadow(
+                          offset: Offset(2.0, 2.0),
+                          blurRadius: 3.0,
+                          color: Color.fromARGB(255, 0, 0, 0),
+                        ),
+
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+                Divider(),
+                Text(
+                  'A malnutrition tracker',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 3,
+                    shadows: <Shadow>[Shadow(
+                      offset: Offset(2.0, 2.0),
+                      blurRadius: 3.0,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                    ),],
+                  ),
+                )
+              ],
             ),
           ),
           Expanded(
@@ -73,10 +103,11 @@ class _HomeState extends State<Home> {
               itemBuilder: (context, index){
                 return Card(
                   child: ListTile(
+                    contentPadding: EdgeInsets.all(20),
                     onTap: (){},
                     leading: Image(
-                      width: 50,
-                      height: 50,
+                      width: 100,
+                      height: 100,
                       image: AssetImage(data[index].imageURL),
                     ),
                     title: Text(data[index].title),

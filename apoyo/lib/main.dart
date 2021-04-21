@@ -11,6 +11,7 @@ import 'package:apoyo/pages/localPatient.dart';
 import 'package:apoyo/services/patient.dart';
 
 void main () => runApp(MaterialApp(
+  debugShowCheckedModeBanner: false,
   initialRoute: '/home',
   routes: {
     '/': (context) => Loading(),
