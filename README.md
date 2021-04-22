@@ -2,8 +2,7 @@
 
 The purpose of this project is to develop an app for volunteers to gather data on malnutrion in Honduras and provide relevant information.
 
-
-  
+This repo contains a complete dockerized backend (MongoDB, ExpressJS) and a flutter application.
 
 ## API
 

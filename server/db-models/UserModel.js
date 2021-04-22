@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 var saltFactor = 10;
-var config = require('../config');
 
 var Schema = mongoose.Schema;
 
